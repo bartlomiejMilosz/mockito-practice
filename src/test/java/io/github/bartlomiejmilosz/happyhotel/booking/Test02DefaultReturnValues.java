@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
-public class Test01FirstMocks {
+public class Test02DefaultReturnValues {
     private BookingService bookingService;
     private PaymentService paymentServiceMock;
     private RoomService roomServiceMock;
@@ -24,15 +24,20 @@ public class Test01FirstMocks {
 
         this.bookingService = new BookingService(paymentServiceMock, roomServiceMock,
                 bookingDAOMock, mailSenderMock);
+        System.out.println("List returned: " + roomServiceMock.getAvailableRooms());
+        System.out.println("Object returned: " + roomServiceMock.findAvailableRoomId(null));
+        System.out.println("Primitive returned: " + roomServiceMock.getRoomCount());
     }
 
     @Test
-    void should_CountAvailablePlaces() {
+    void should_CalculateCorrectPrice_When_CorrectInput() {
         // given
-        int expected = 0;
+        BookingRequest bookingRequest = new BookingRequest("1", LocalDate.of(2020, 1, 1),
+                LocalDate.of(2020, 1, 5), 2, false);
+        double expected = bookingService.calculatePrice(bookingRequest);
 
         // when
-        int actual = bookingService.getAvailablePlaceCount();
+        double actual = 4 * 2 * 50.0;
 
         // then
         assertEquals(expected, actual);
